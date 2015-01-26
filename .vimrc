@@ -14,6 +14,8 @@ set number
 set autoindent
 set ruler
 
+set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
+
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%81v.\+/
 
@@ -25,6 +27,7 @@ map <C-n> :tabf ./
 map <M-Left> :tabprevious<CR>
 map <M-Right> :tabnext<CR>
 map <C-c> :bd<CR>
+map <C-h> :set list!<CR>
 "TODO!!
 map <F3> :call ExecGrepWithQuickFixOutput("*.js")<CR>
 " Mappings END
