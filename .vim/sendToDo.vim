@@ -1,0 +1,40 @@
+let s:MAPPINGS = {
+  \ '<F2>': ' :call SendToDoEmail()'
+  \}
+let s:SUBJECT_NAME = "TODO"
+let s:BUFFER_ID = 0
+
+map <C-m> :call SendToDo<CR>
+
+function! SendToDo() " windowType stands for vertical split or new tab or smthing else
+  sp
+  let s:BUFFER_ID = bufnr("%")
+  call ToggleSendMappings(1)
+endfunction
+
+function! SendToDoEmail()
+  let l:fullBufferText = join(getline(1, '$'), " ")
+  let l:fullEmailText = "Subject: " . s:SUBJECT_NAME . "\n From: alukjanov92@gmail.com " . l:fullBufferText . "\n"
+  execute "write! tmp_send_email"
+  let l:fullCmdText = "!ssmtp alukjanov92@gmail.com < ./tmp_send_email"
+  execute l:fullCmdText
+  call system("rm tmp_send_email")
+endfunction
+
+function! ToggleSendMappings(flag)
+  let cmdStart = ""
+  let fullCmd = ""
+  if(a:flag)
+    let cmdStart = "map "
+  else
+    let cmdStart = "unmap "
+  endif
+  for [key, value] in items(s:MAPPINGS)
+    let fullCmd = l:cmdStart . l:key . l:value . " <CR>"
+    execute fullCmd
+  endfor
+endfunction
+
+function! ExtractToDoBufferContents(bufferId)
+  
+endfunction
